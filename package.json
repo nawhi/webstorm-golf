@@ -1,0 +1,21 @@
+{
+  "name": "webstorm-golf",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/nawhi/webstorm-golf",
+  "author": "Nick White",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@babel/core": "*",
+    "@babel/preset-env": "*",
+    "babel-jest": "*",
+    "jest": "*"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
