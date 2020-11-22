@@ -13,9 +13,11 @@
     "jest": "*"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "verify": "./verify.sh"
   },
   "dependencies": {
+    "diff-so-fancy": "^1.3.0",
     "nodemon": "^2.0.6"
   }
 }
