@@ -7,9 +7,11 @@ There are TODO holes on this course.
 Your task is to convert the file called `hole` into the one called `target` in the fewest number of "shots" (interactions with the IDE) that you can. 
 
 When starting the hole, you can put your cursor anywhere in the file. From then on, the following rules are used to calculate your score:
-- any key press (e.g. a letter or punctuation) is 1 point 
+- any key press (e.g. a single letter or punctuation) is 1 point
+- writing a word is 1 point 
 - any keyboard shortcut (e.g. Alt+Enter) is 1 point
-- navigating in submenus or dialog boxes does not incur any points 
+- navigating in submenus or dialog boxes does not incur any points
+- moving to a new location is 2 points 
 - any mouse click is 5 points
 
 For example: 
