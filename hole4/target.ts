@@ -7,15 +7,10 @@ interface Config {
   temperature: number;
 }
 
-// Convert parameters to a single argument (Par: 5)
+// Convert parameters to a single argument (Par: 10)
 function hashConfig(
   {status, pressure, speed, mileage, consumption, temperature}: Config) {
   return [
-    status,
-    pressure,
-    speed,
-    mileage,
-    consumption,
-    temperature
+    status, pressure, speed, mileage, consumption, temperature
   ].join("|");
 }
