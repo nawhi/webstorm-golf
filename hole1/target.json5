@@ -1,4 +1,4 @@
-// Rearrange the two entries in the array!
+// Rearrange the two entries in the array! (Par: 4)
 [
   {"name":"A. N. Otherdev","position":"Software Engineer"},
   {"name":"A. D. Veloper","position":"Senior Software Engineer"}
