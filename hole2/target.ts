@@ -1,4 +1,4 @@
-// Extract a type called LogFn! (Par: 8)
+// Extract a type called LogFn! (Par: 6)
 
 type LogFn = (msg: string, ...args: any[]) => void;
 export type Logger = {
