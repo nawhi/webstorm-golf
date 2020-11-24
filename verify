@@ -3,7 +3,7 @@
 function check() {
   set -o pipefail
   clear
-  diff -u $1 $2 |
+  diff -bu $1 $2 |
     yarn --silent diff-so-fancy |
     tail -n +5 && echo 'Hole complete!' || echo 'Try again...'
 }
