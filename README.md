@@ -1,8 +1,9 @@
+# WebStorm Golf
+Inspired by the Masters a few weeks ago, here is a Golf themed way of learning how to master the features of your IDE!
+
 ## Instructions
 ### Prerequisites
 Clone the repo and run `yarn install`.
-
-There are TODO holes on this course. 
 
 Your task is to convert the file called `hole` into the one called `target` in the fewest number of "shots" (atomic modifications of the file) that you can. 
 
