@@ -9,13 +9,14 @@ Your task is to convert the file called `hole` into the one called `target` in t
 
 The following all count as one shot:
 - any single key press (e.g. delete or type a character)
-- any keyboard shortcut (e.g. Alt+Enter)
+- any keyboard shortcut (e.g. Cmd+Backspace to delete a word)
 
-Using the mouse incurs a penalty shot in addition to one shot per click.
+Using the mouse incurs a penalty shot.
 
 The following do not count as a shot:
 - navigating in submenus or dialog boxes (unless you use the mouse)
 - moving the cursor to a different location
+- highlighting parts of the code or adding multiple cursors
 
 You have completed a hole when the `hole` and `target` files are identical, such that running `diff` between them generates no output and an exit code of zero. There are a few ways of verifying this:
 * run `yarn verify` with the name of the hole directory, e.g. `yarn verify hole1`
