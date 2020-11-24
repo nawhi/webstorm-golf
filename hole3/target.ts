@@ -1,7 +1,5 @@
 import * as readline from 'readline';
 
-// Extract stdout and stdin as parameters! (Par: 5)
-
 function main(stdin: NodeJS.ReadStream, output: NodeJS.WriteStream) {
 
   const rl = readline.createInterface({

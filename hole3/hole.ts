@@ -1,7 +1,5 @@
 import * as readline from 'readline';
 
-// Extract stdout and stdin as parameters! (Par: 5)
-
 function main() {
 
   const rl = readline.createInterface({

@@ -18,7 +18,7 @@ The following do not count as a shot:
 - moving the cursor to a different location
 - highlighting parts of the code or adding multiple cursors
 
-You have completed a hole when the `hole` and `target` files are identical, such that running `diff` between them generates no output and an exit code of zero. There are a few ways of verifying this:
+You have completed a hole when the `hole` and `target` files are identical (except whitespace), such that running `diff` between them generates no output and an exit code of zero. There are a few ways of verifying this:
 * run `yarn verify` with the name of the hole directory, e.g. `yarn verify hole1`
 (note: you will need to install [`fswatch`](https://github.com/emcrisostomo/fswatch)).
 * If you like a GUI, you can run a `diff` command in WebStorm's inbuilt shell and use the Smart Commands Execution feature (when the terminal text goes green) to pop up a diff window. You can then even edit the hole file in-place in the diff window if you want, for instant (if noisy) feedback.

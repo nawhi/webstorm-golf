@@ -7,7 +7,7 @@ interface Config {
   temperature: number;
 }
 
-// Convert parameters to a single argument (Par: 10)
+// Convert parameters to a single argument
 function hashConfig(
   {status, pressure, speed, mileage, consumption, temperature}: Config) {
   return [
