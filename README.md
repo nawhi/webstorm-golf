@@ -5,25 +5,32 @@ Inspired by the Masters a few weeks ago, here is a Golf themed way of learning h
 ### Prerequisites
 Clone the repo and run `yarn install`.
 
+### Gameplay
 Your task is to convert the file called `hole` into the one called `target` in the fewest number of "shots" (atomic modifications of the file) that you can. 
 
-The following all count as one shot:
-- any single key press (e.g. delete or type a character)
-- any keyboard shortcut (e.g. Cmd+Backspace to delete a word)
+The following count as one shot:
+- any single key press which causes a change in the file (e.g. deleting or typing a character)
+- any keyboard shortcut which causes an atomic change in the file (e.g. Delete Line, Move Line Up, Extract Variable, Rename)
 
-Using the mouse incurs a penalty shot.
+The following moves are considered navigation and do not count as a shot:
+- any actions in submenus or dialog boxes, including typing into text boxes such as the Find or Search Everywhere dialogs
+- moving the cursor to a different location, highlighting parts of the code or adding multiple cursors  (although as a Hard Mode extension, you may wish to score these actions too!)
 
-The following do not count as a shot:
-- navigating in submenus or dialog boxes (unless you use the mouse)
-- moving the cursor to a different location
-- highlighting parts of the code or adding multiple cursors
+Using the mouse incurs a **one-shot penalty** for each click, double-click or click-drag action, _anywhere_ in the IDE (including in submenus or dialog boxes). In other words, each mouse usage counts as two shots.
 
+### Completing a hole
 You have completed a hole when the `hole` and `target` files are identical (except whitespace), such that running `diff` between them generates no output and an exit code of zero. There are a few ways of verifying this:
 * run `yarn verify` with the name of the hole directory, e.g. `yarn verify hole1`
 (note: you will need to install [`fswatch`](https://github.com/emcrisostomo/fswatch)).
 * If you like a GUI, you can run a `diff` command in WebStorm's inbuilt shell and use the Smart Commands Execution feature (when the terminal text goes green) to pop up a diff window. You can then even edit the hole file in-place in the diff window if you want, for instant (if noisy) feedback.
 
-If you are working with a partner, you may wish to install the [Presentation Assistant](https://plugins.jetbrains.com/plugin/7345-presentation-assistant) IDE plugin to make it easier for them to see what you are doing.
+## Tips
+To complete the course with a good score, you'll need to make use of [multiple cursors](https://www.jetbrains.com/webstorm/guide/tips/multi-cursor/), [regular expression find and replace](https://www.jetbrains.com/help/webstorm/tutorial-finding-and-replacing-text-using-regular-expressions.html), and the [refactoring tools](https://www.jetbrains.com/help/webstorm/refactoring-source-code.html).
+
+The [WebStorm Keymap Reference](https://resources.jetbrains.com/storage/products/webstorm/docs/WebStorm_ReferenceCard.pdf) may be useful.
+
+If you are working with a partner, you may wish to install [Presentation Assistant](https://plugins.jetbrains.com/plugin/7345-presentation-assistant) to make it easier for them to see what you are doing.
+
 
 Good luck!
 
