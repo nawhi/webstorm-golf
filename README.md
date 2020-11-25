@@ -25,7 +25,9 @@ You have completed a hole when the `hole` and `target` files are identical (exce
 * If you like a GUI, you can run a `diff` command in WebStorm's inbuilt shell and use the Smart Commands Execution feature (when the terminal text goes green) to pop up a diff window. You can then even edit the hole file in-place in the diff window if you want, for instant (if noisy) feedback.
 
 ## Tips
-To complete the course with a good score, you'll need to make use of [multiple cursors](https://www.jetbrains.com/webstorm/guide/tips/multi-cursor/), [regular expression find and replace](https://www.jetbrains.com/help/webstorm/tutorial-finding-and-replacing-text-using-regular-expressions.html), and the [refactoring tools](https://www.jetbrains.com/help/webstorm/refactoring-source-code.html).
+To complete the course with a good score, you'll need to make use of many of the most powerful features of the IDE, such as [multiple cursors](https://www.jetbrains.com/webstorm/guide/tips/multi-cursor/), [regular expression find and replace](https://www.jetbrains.com/help/webstorm/tutorial-finding-and-replacing-text-using-regular-expressions.html), and the [refactoring tools](https://www.jetbrains.com/help/webstorm/refactoring-source-code.html).
+
+There are no solutions, because there's no right way to do this - and the scoring and par is somewhat arbitrary. Ultimately, it's all about becoming quicker at the kind of text editing that engineers do all day. 
 
 The [WebStorm Keymap Reference](https://resources.jetbrains.com/storage/products/webstorm/docs/WebStorm_ReferenceCard.pdf) may be useful.
 
