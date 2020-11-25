@@ -27,12 +27,11 @@ You have completed a hole when the `hole` and `target` files are identical (exce
 ## Tips
 To complete the course with a good score, you'll need to make use of many of the most powerful features of the IDE, such as [multiple cursors](https://www.jetbrains.com/webstorm/guide/tips/multi-cursor/), [regular expression find and replace](https://www.jetbrains.com/help/webstorm/tutorial-finding-and-replacing-text-using-regular-expressions.html), and the [refactoring tools](https://www.jetbrains.com/help/webstorm/refactoring-source-code.html).
 
-There are no solutions, because there's no right way to do this - and the scoring and par is somewhat arbitrary. Ultimately, it's all about becoming quicker at the kind of text editing that engineers do all day. 
-
 The [WebStorm Keymap Reference](https://resources.jetbrains.com/storage/products/webstorm/docs/WebStorm_ReferenceCard.pdf) may be useful.
 
 If you are working with a partner, you may wish to install [Presentation Assistant](https://plugins.jetbrains.com/plugin/7345-presentation-assistant) to make it easier for them to see what you are doing.
 
+There are no included solutions, because there's no right way to do this - and the scoring and par is somewhat arbitrary. Ultimately, it's all about becoming quicker at the kind of text editing that engineers do all day, in whatever way works best for you.
 
 Good luck!
 
