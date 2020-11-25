@@ -1,22 +1,22 @@
 import * as readline from 'readline';
 
-function main(stdin: NodeJS.ReadStream, output: NodeJS.WriteStream) {
+function main(stdin: NodeJS.ReadStream, stdout: NodeJS.WriteStream) {
 
   const rl = readline.createInterface({
     input: stdin,
-    output: output
+    output: stdout
   });
 
   const number = Math.floor((Math.random() * 21) % 21) + 1;
-  output.write("Guess a number between 1 and 20!");
+  stdout.write("Guess a number between 1 and 20!");
 
   rl.prompt();
   rl.on('line', (input) => {
     if (Number(input) === number) {
-      output.write("Congratulations! You guessed it");
+      stdout.write("Congratulations! You guessed it");
       process.exit(0);
     } else {
-      output.write("Try again...");
+      stdout.write("Try again...");
       return rl.prompt();
     }
   })
