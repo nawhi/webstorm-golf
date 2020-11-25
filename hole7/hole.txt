@@ -1,0 +1,234 @@
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100   1) /**
+cd39795c (gcanti         2020-01-25 08:35:45 +0100   2)  * This module provides a simuation of Haskell do notation.
+cd39795c (gcanti         2020-01-25 08:35:45 +0100   3)  *
+cd39795c (gcanti         2020-01-25 08:35:45 +0100   4)  * @since 0.1.0
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100   5)  */
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200   6) import { sequenceS } from 'fp-ts/lib/Apply'
+5abfc20d (gcanti         2019-06-19 11:01:24 +0200   7) import { HKT, Kind, Kind2, Kind3, URIS, URIS2, URIS3 } from 'fp-ts/lib/HKT'
+5abfc20d (gcanti         2019-06-19 11:01:24 +0200   8) import { Monad, Monad1, Monad2, Monad2C, Monad3 } from 'fp-ts/lib/Monad'
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200   9)
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200  10) type EnforceNonEmptyRecord<R> = keyof R extends never ? never : R
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  11)
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  12) /**
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  13)  * @since 0.1.0
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  14)  */
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  15) export interface Do3<M extends URIS3, S extends object> {
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  16)   do: <R, E>(ma: Kind3<M, R, E, any>) => Do3C<M, S, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  17)   doL: <R, E>(f: (s: S) => Kind3<M, R, E, any>) => Do3C<M, S, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  18)   bind: <N extends string, A, R, E>(
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  19)     name: Exclude<N, keyof S>,
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  20)     ma: Kind3<M, R, E, A>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  21)   ) => Do3C<M, S & { [K in N]: A }, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  22)   bindL: <N extends string, A, R, E>(
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  23)     name: Exclude<N, keyof S>,
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  24)     f: (s: S) => Kind3<M, R, E, A>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  25)   ) => Do3C<M, S & { [K in N]: A }, R, E>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900  26)   let: <N extends string, A, R, E>(name: Exclude<N, keyof S>, a: A) => Do3C<M, S & { [K in N]: A }, R, E>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900  27)   letL: <N extends string, A, R, E>(name: Exclude<N, keyof S>, f: (s: S) => A) => Do3C<M, S & { [K in N]: A }, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  28)   sequenceS: <R, E, I extends Record<string, Kind3<M, R, E, any>>>(
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  29)     r: EnforceNonEmptyRecord<I> & Record<string, Kind3<M, R, E, any>> & { [K in keyof S]?: never }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  30)   ) => Do3C<M, S & { [K in keyof I]: [I[K]] extends [Kind3<M, any, any, infer A>] ? A : never }, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  31)   sequenceSL: <R, E, I extends Record<string, Kind3<M, R, E, any>>>(
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  32)     f: (s: S) => EnforceNonEmptyRecord<I> & Record<string, Kind3<M, R, E, any>> & { [K in keyof S]?: never }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  33)   ) => Do3C<M, S & { [K in keyof I]: [I[K]] extends [Kind3<M, any, any, infer A>] ? A : never }, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  34)   return: <R, E, A>(f: (s: S) => A) => Kind3<M, R, E, A>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  35)   done: <R, E>() => Kind3<M, R, E, S>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  36) }
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  37)
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  38) /**
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  39)  * @since 0.1.0
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  40)  */
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  41) export interface Do3C<M extends URIS3, S extends object, R, E> {
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  42)   do: (ma: Kind3<M, R, E, any>) => Do3C<M, S, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  43)   doL: (f: (s: S) => Kind3<M, R, E, any>) => Do3C<M, S, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  44)   bind: <N extends string, A>(name: Exclude<N, keyof S>, ma: Kind3<M, R, E, A>) => Do3C<M, S & { [K in N]: A }, R, E>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  45)   bindL: <N extends string, A>(
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  46)     name: Exclude<N, keyof S>,
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  47)     f: (s: S) => Kind3<M, R, E, A>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  48)   ) => Do3C<M, S & { [K in N]: A }, R, E>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900  49)   let: <N extends string, A>(name: Exclude<N, keyof S>, a: A) => Do3C<M, S & { [K in N]: A }, R, E>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900  50)   letL: <N extends string, A>(name: Exclude<N, keyof S>, f: (s: S) => A) => Do3C<M, S & { [K in N]: A }, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  51)   sequenceS: <I extends Record<string, Kind3<M, R, E, any>>>(
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  52)     r: EnforceNonEmptyRecord<I> & { [K in keyof S]?: never }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  53)   ) => Do3C<M, S & { [K in keyof I]: [I[K]] extends [Kind3<M, any, any, infer A>] ? A : never }, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  54)   sequenceSL: <I extends Record<string, Kind3<M, R, E, any>>>(
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  55)     f: (s: S) => EnforceNonEmptyRecord<I> & { [K in keyof S]?: never }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  56)   ) => Do3C<M, S & { [K in keyof I]: [I[K]] extends [Kind3<M, any, any, infer A>] ? A : never }, R, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  57)   return: <A>(f: (s: S) => A) => Kind3<M, R, E, A>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  58)   done: () => Kind3<M, R, E, S>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  59) }
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  60)
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  61) /**
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  62)  * @since 0.1.0
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  63)  */
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  64) export interface Do2<M extends URIS2, S extends object> {
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  65)   do: <E>(ma: Kind2<M, E, any>) => Do2C<M, S, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  66)   doL: <E>(f: (s: S) => Kind2<M, E, any>) => Do2C<M, S, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  67)   bind: <N extends string, A, E>(name: Exclude<N, keyof S>, ma: Kind2<M, E, A>) => Do2C<M, S & { [K in N]: A }, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  68)   bindL: <N extends string, A, E>(
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  69)     name: Exclude<N, keyof S>,
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  70)     f: (s: S) => Kind2<M, E, A>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  71)   ) => Do2C<M, S & { [K in N]: A }, E>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900  72)   let: <N extends string, A, E>(name: Exclude<N, keyof S>, a: A) => Do2C<M, S & { [K in N]: A }, E>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900  73)   letL: <N extends string, A, E>(name: Exclude<N, keyof S>, f: (s: S) => A) => Do2C<M, S & { [K in N]: A }, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  74)   sequenceS: <E, I extends Record<string, Kind2<M, E, any>>>(
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  75)     r: EnforceNonEmptyRecord<I> & Record<string, Kind2<M, E, any>> & { [K in keyof S]?: never }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  76)   ) => Do2C<M, S & { [K in keyof I]: [I[K]] extends [Kind2<M, any, infer A>] ? A : never }, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  77)   sequenceSL: <E, I extends Record<string, Kind2<M, E, any>>>(
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  78)     f: (s: S) => EnforceNonEmptyRecord<I> & Record<string, Kind2<M, E, any>> & { [K in keyof S]?: never }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  79)   ) => Do2C<M, S & { [K in keyof I]: [I[K]] extends [Kind2<M, any, infer A>] ? A : never }, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  80)   return: <E, A>(f: (s: S) => A) => Kind2<M, E, A>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  81)   done: <E>() => Kind2<M, E, S>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  82) }
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  83)
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  84) /**
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  85)  * @since 0.1.0
+f5639bba (gcanti         2019-07-16 16:56:09 +0200  86)  */
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  87) export interface Do2C<M extends URIS2, S extends object, E> {
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  88)   do: (ma: Kind2<M, E, any>) => Do2C<M, S, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  89)   doL: (f: (s: S) => Kind2<M, E, any>) => Do2C<M, S, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  90)   bind: <N extends string, A>(name: Exclude<N, keyof S>, ma: Kind2<M, E, A>) => Do2C<M, S & { [K in N]: A }, E>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  91)   bindL: <N extends string, A>(
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400  92)     name: Exclude<N, keyof S>,
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  93)     f: (s: S) => Kind2<M, E, A>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  94)   ) => Do2C<M, S & { [K in N]: A }, E>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900  95)   let: <N extends string, A>(name: Exclude<N, keyof S>, a: A) => Do2C<M, S & { [K in N]: A }, E>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900  96)   letL: <N extends string, A>(name: Exclude<N, keyof S>, f: (s: S) => A) => Do2C<M, S & { [K in N]: A }, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  97)   sequenceS: <I extends Record<string, Kind2<M, E, any>>>(
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  98)     r: EnforceNonEmptyRecord<I> & { [K in keyof S]?: never }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100  99)   ) => Do2C<M, S & { [K in keyof I]: [I[K]] extends [Kind2<M, any, infer A>] ? A : never }, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 100)   sequenceSL: <I extends Record<string, Kind2<M, E, any>>>(
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 101)     f: (s: S) => EnforceNonEmptyRecord<I> & { [K in keyof S]?: never }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 102)   ) => Do2C<M, S & { [K in keyof I]: [I[K]] extends [Kind2<M, any, infer A>] ? A : never }, E>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 103)   return: <A>(f: (s: S) => A) => Kind2<M, E, A>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 104)   done: () => Kind2<M, E, S>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 105) }
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 106)
+f5639bba (gcanti         2019-07-16 16:56:09 +0200 107) /**
+f5639bba (gcanti         2019-07-16 16:56:09 +0200 108)  * @since 0.1.0
+f5639bba (gcanti         2019-07-16 16:56:09 +0200 109)  */
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 110) export interface Do1<M extends URIS, S extends object> {
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 111)   do: (ma: Kind<M, any>) => Do1<M, S>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 112)   doL: (f: (s: S) => Kind<M, any>) => Do1<M, S>
+5abfc20d (gcanti         2019-06-19 11:01:24 +0200 113)   bind: <N extends string, A>(name: Exclude<N, keyof S>, ma: Kind<M, A>) => Do1<M, S & { [K in N]: A }>
+5abfc20d (gcanti         2019-06-19 11:01:24 +0200 114)   bindL: <N extends string, A>(name: Exclude<N, keyof S>, f: (s: S) => Kind<M, A>) => Do1<M, S & { [K in N]: A }>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 115)   let: <N extends string, A>(name: Exclude<N, keyof S>, a: A) => Do1<M, S & { [K in N]: A }>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 116)   letL: <N extends string, A>(name: Exclude<N, keyof S>, f: (s: S) => A) => Do1<M, S & { [K in N]: A }>
+5abfc20d (gcanti         2019-06-19 11:01:24 +0200 117)   sequenceS: <R extends Record<string, Kind<M, any>>>(
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200 118)     r: EnforceNonEmptyRecord<R> & { [K in keyof S]?: never }
+5abfc20d (gcanti         2019-06-19 11:01:24 +0200 119)   ) => Do1<M, S & { [K in keyof R]: [R[K]] extends [Kind<M, infer A>] ? A : never }>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 120)   sequenceSL: <I extends Record<string, Kind<M, any>>>(
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 121)     f: (s: S) => EnforceNonEmptyRecord<I> & { [K in keyof S]?: never }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 122)   ) => Do1<M, S & { [K in keyof I]: [I[K]] extends [Kind<M, infer A>] ? A : never }>
+5abfc20d (gcanti         2019-06-19 11:01:24 +0200 123)   return: <A>(f: (s: S) => A) => Kind<M, A>
+5abfc20d (gcanti         2019-06-19 11:01:24 +0200 124)   done: () => Kind<M, S>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 125) }
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 126)
+f5639bba (gcanti         2019-07-16 16:56:09 +0200 127) /**
+f5639bba (gcanti         2019-07-16 16:56:09 +0200 128)  * @since 0.1.0
+f5639bba (gcanti         2019-07-16 16:56:09 +0200 129)  */
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 130) export interface Do0<M, S extends object> {
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 131)   do: (ma: HKT<M, any>) => Do0<M, S>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 132)   doL: (f: (s: S) => HKT<M, any>) => Do0<M, S>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 133)   bind: <N extends string, A>(name: Exclude<N, keyof S>, ma: HKT<M, A>) => Do0<M, S & { [K in N]: A }>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 134)   bindL: <N extends string, A>(name: Exclude<N, keyof S>, f: (s: S) => HKT<M, A>) => Do0<M, S & { [K in N]: A }>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 135)   let: <N extends string, A>(name: Exclude<N, keyof S>, a: A) => Do0<M, S & { [K in N]: A }>
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 136)   letL: <N extends string, A>(name: Exclude<N, keyof S>, f: (s: S) => A) => Do0<M, S & { [K in N]: A }>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 137)   sequenceS: <R extends Record<string, HKT<M, any>>>(
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200 138)     r: EnforceNonEmptyRecord<R> & { [K in keyof S]?: never }
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200 139)   ) => Do0<M, S & { [K in keyof R]: [R[K]] extends [HKT<M, infer A>] ? A : never }>
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 140)   sequenceSL: <R extends Record<string, HKT<M, any>>>(
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200 141)     f: (s: S) => EnforceNonEmptyRecord<R> & { [K in keyof S]?: never }
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200 142)   ) => Do0<M, S & { [K in keyof R]: [R[K]] extends [HKT<M, infer A>] ? A : never }>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 143)   return: <A>(f: (s: S) => A) => HKT<M, A>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 144)   done: () => HKT<M, S>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 145) }
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 146)
+55fe295e (gcanti         2019-04-27 15:00:39 +0200 147) class DoClass<M> {
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 148)   constructor(readonly M: Monad<M>, private result: HKT<M, any>) {}
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 149)   do(action: HKT<M, any>): DoClass<M> {
+897149b0 (gcanti         2019-11-14 07:31:59 +0100 150)     return new DoClass(
+897149b0 (gcanti         2019-11-14 07:31:59 +0100 151)       this.M,
+1f1f8c04 (gcanti         2020-08-12 16:04:18 +0200 152)       this.M.chain(this.result, (s) => this.M.map(action, () => s))
+897149b0 (gcanti         2019-11-14 07:31:59 +0100 153)     )
+55fe295e (gcanti         2019-04-27 15:00:39 +0200 154)   }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 155)   doL(f: (s: any) => HKT<M, any>): DoClass<M> {
+897149b0 (gcanti         2019-11-14 07:31:59 +0100 156)     return new DoClass(
+897149b0 (gcanti         2019-11-14 07:31:59 +0100 157)       this.M,
+1f1f8c04 (gcanti         2020-08-12 16:04:18 +0200 158)       this.M.chain(this.result, (s) => this.M.map(f(s), () => s))
+897149b0 (gcanti         2019-11-14 07:31:59 +0100 159)     )
+55fe295e (gcanti         2019-04-27 15:00:39 +0200 160)   }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 161)   bind(name: string, action: HKT<M, any>): DoClass<M> {
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 162)     return new DoClass(
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 163)       this.M,
+1f1f8c04 (gcanti         2020-08-12 16:04:18 +0200 164)       this.M.chain(this.result, (s) => this.M.map(action, (b) => Object.assign({}, s, { [name]: b })))
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 165)     )
+55fe295e (gcanti         2019-04-27 15:00:39 +0200 166)   }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 167)   bindL(name: string, f: (s: any) => HKT<M, any>): DoClass<M> {
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 168)     return new DoClass(
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 169)       this.M,
+1f1f8c04 (gcanti         2020-08-12 16:04:18 +0200 170)       this.M.chain(this.result, (s) => this.M.map(f(s), (b) => Object.assign({}, s, { [name]: b })))
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 171)     )
+55fe295e (gcanti         2019-04-27 15:00:39 +0200 172)   }
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 173)   let(name: string, a: any): DoClass<M> {
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 174)     return new DoClass(
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 175)       this.M,
+1f1f8c04 (gcanti         2020-08-12 16:04:18 +0200 176)       this.M.map(this.result, (s) => Object.assign({}, s, { [name]: a }))
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 177)     )
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 178)   }
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 179)   letL(name: string, f: (s: any) => any): DoClass<M> {
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 180)     return new DoClass(
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 181)       this.M,
+1f1f8c04 (gcanti         2020-08-12 16:04:18 +0200 182)       this.M.map(this.result, (s) => Object.assign({}, s, { [name]: f(s) }))
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 183)     )
+4bd25947 (kgtkr          2020-02-15 15:45:07 +0900 184)   }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 185)   sequenceS(r: Record<string, HKT<M, any>>): DoClass<M> {
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 186)     return new DoClass(
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 187)       this.M,
+1f1f8c04 (gcanti         2020-08-12 16:04:18 +0200 188)       this.M.chain(this.result, (s) => this.M.map(sequenceS(this.M)(r), (r) => Object.assign({}, s, r)))
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 189)     )
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200 190)   }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 191)   sequenceSL(f: (s: any) => Record<string, HKT<M, any>>): DoClass<M> {
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 192)     return new DoClass(
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 193)       this.M,
+1f1f8c04 (gcanti         2020-08-12 16:04:18 +0200 194)       this.M.chain(this.result, (s) => this.M.map(sequenceS(this.M)(f(s)), (r) => Object.assign({}, s, r)))
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 195)     )
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200 196)   }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 197)   return<B>(f: (s: any) => B): HKT<M, B> {
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 198)     return this.M.map(this.result, f)
+55fe295e (gcanti         2019-04-27 15:00:39 +0200 199)   }
+bb1d152c (gcanti         2019-12-30 10:17:02 +0100 200)   done(): HKT<M, any> {
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 201)     return this.result
+55fe295e (gcanti         2019-04-27 15:00:39 +0200 202)   }
+55fe295e (gcanti         2019-04-27 15:00:39 +0200 203) }
+55fe295e (gcanti         2019-04-27 15:00:39 +0200 204)
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 205) const init = {}
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 206)
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 207) /**
+99c95937 (Denis Frezzato 2019-07-13 12:53:12 +0200 208)  * This function provides a simulation of Haskell do notation. The `bind` / `bindL` functions contributes to a threaded
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 209)  * scope that is available to each subsequent step. The `do` / `doL` functions can be used to perform computations that
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 210)  * add nothing to the scope. The `return` function lifts the given callback to the monad context. Finally the `done`
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 211)  * function returns the scope.
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 212)  *
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 213)  * @example
+20a0dda5 (gcanti         2020-09-13 09:56:26 +0200 214)  * import { option, some } from 'fp-ts/Option'
+20a0dda5 (gcanti         2020-09-13 09:56:26 +0200 215)  * import { Do } from 'fp-ts-contrib/Do'
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 216)  *
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 217)  * // x: Option<number>
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 218)  * const x = Do(option) // <- a monad instance
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 219)  *   .bindL('foo', () => some('bar'))
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 220)  *   .bindL('baz', () => some(4))
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 221)  *   .return(({ foo, baz }) => foo.length + baz)
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 222)  *
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 223)  * assert.deepStrictEqual(x, some(7))
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 224)  *
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 225)  * @since 0.0.2
+f293a4b8 (gcanti         2019-03-28 15:09:48 +0100 226)  */
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 227) export function Do<M extends URIS3>(M: Monad3<M>): Do3<M, {}>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 228) export function Do<M extends URIS2>(M: Monad2<M>): Do2<M, {}>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 229) export function Do<M extends URIS2, L>(M: Monad2C<M, L>): Do2C<M, {}, L>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 230) export function Do<M extends URIS>(M: Monad1<M>): Do1<M, {}>
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 231) export function Do<M>(M: Monad<M>): Do0<M, {}>
+680f7bfc (gcanti         2019-05-01 16:58:14 +0200 232) export function Do<M>(M: Monad<M>): any {
+6556ab90 (gcanti         2019-05-06 12:39:55 +0200 233)   return new DoClass(M, M.of(init))
+e0ac8209 (Paul Gray      2019-03-21 09:35:21 -0400 234) }
